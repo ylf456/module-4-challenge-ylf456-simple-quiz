@@ -83,5 +83,35 @@ h1 {
 .hidden-quiz {display: none;}
 
 .revealed-quiz {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 3%;
+}
 
+.revealed-quiz p { 
+    font-weight: bold;
+    font-size: 150%;
+    align-self: flex-start;
+    justify-self: flex-start; 
+    margin-bottom:5% ;
+}
+
+.revealed-quiz li {
+    border-radius: 1%;
+    border-style: solid;
+    border-color: rgb(90, 38, 158);
+    margin: 25% 0 25% 5%;
+    padding: 2%;
+    width:180%;
+    height: fit-content;
+    background-color: antiquewhite;
+    font-size:125%;
+
+}
+
+.revealed-quiz li:hover {
+    border-color: rgb(208, 19, 19);
+    font-size:135%;
 }
