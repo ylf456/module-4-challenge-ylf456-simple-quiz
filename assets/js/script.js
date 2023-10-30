@@ -1,9 +1,11 @@
 var countdownNumber = document.getElementById("time-remaining");
 var quizStartbutton = document.getElementById("start-button");
-var quizDataNumber = document.getElementById("quiz-content");
+var quizDivNumber = document.getElementById("quiz-content");
 var lastQuestionCorrectorNot = document.getElementById("check-last-question");
-var answerListContainer = document.querySelector("li")
+var answerListContainer = document.querySelector('li')
 var index = 0;
+var checkAnswer;
+//var nameOrinitial = document.getElementById()
 /*
 var question1optionsArray = []
 var question2optionsArray = []
@@ -14,71 +16,71 @@ var question5optionsArray = []
 
 var trueAnswersArray = ["script", "The body section", "function myFunction()", "myFunction()", "//This is a comment"];
 
-var timeleft = 10;
-function countdown() {
-    // Sets interval in variable
-    var timerInterval = setInterval(function () {
-        timeleft = timeleft - 1;
-        countdownNumber.textContent = "Time Remaining: " + timeleft;
+var timeleft = 170;
 
-        if (timeleft === 0) {
-            // Stops execution of action at set interval
-            clearInterval(timerInterval);
-            
-            // Calls function that shows the Settlement interface
-           
-            return index = 5;  
-        }
-    }, 1000);
+// Sets interval in variable
+var timerInterval = setInterval(function () {
+    timeleft--;
+    countdownNumber.textContent = "Time Remaining: " + timeleft;
+
+    if (timeleft === 0 || timeleft <0) {
+        // Stops execution of action at set interval
+        clearInterval(timerInterval);
+        // Calls function that shows the Settlement interface
+        quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
+        index = 6;
+        return iterateOverQuizs();
+    }
+}, 1000);
+
+var iterateOverQuizs = function () {
+    quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
+    if (trueAnswersArray.includes(checkAnswer) && index < 5) {
+        
+        quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
+        index++;
+        lastQuestionCorrectorNot.textContent = "Last Question= correct!"
+    } else if (!trueAnswersArray.includes(checkAnswer) && index < 5) {
+       
+        quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
+        index++;
+        timeleft = timeleft - 10;
+        lastQuestionCorrectorNot.textContent = "Last Question= wrong"
+    } else  { 
+        quizDivNumber.children[index].setAttribute('class', 'revealed-quiz')
+        clearInterval(timerInterval); }
 }
-console.log(index)
-console.log(quizDataNumber.children[5])
+
+
 quizStartbutton.addEventListener("click", function (event) {
-    event.preventDefault();
-    countdown();
-    iterateOverQuizs();
+    event.preventDefault(); 
+    quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
+    quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
+    index++;
+    timerInterval();
 });
 
-//var testingTheAnswer = function () {}
+answerListContainer.addEventListener("click", function (event) {
+    event.preventDefault();
+    var element = event.target;
+    checkAnswer = element.getAttribute("textcontent")
+    if (element.matches("li")) { iterateOverQuizs() }
+    
+})
 
-var iterateOverQuizs = function (index) {
-    quizDataNumber.children[index].setAttribute('class', 'hidden-quiz');
-    quizDataNumber.children[index + 1].setAttribute('class', 'revealed-quiz');
-    if (index < 6) {
-        answerListContainer.addEventListener("click", function (event) {
-            event.preventDefault();
-            var element = event.target;
-            if (element.matches("li")) {
-                var checkAnswer = element.getAttribute("textcontent")
-                if (trueAnswersArray.includes(checkAnswer)) {
-                    index = index + 1;
-                    lastQuestionCorrectorNot.textContent = "Last Question= correct!"
-                } else if (!trueAnswersArray.includes(checkAnswer)) {
-                    index = index + 1;
-                    lastQuestionCorrectorNot.textContent = "Last Question= wrong"
-                }
-            }
-        })
-    }
-    else { clearInterval(timerInterval);
-        return;
-        //call a function fot the settlement screen
-    }
-}
-
-var settlementScreen = function () {}
+var settlementScreen = function () { }
 
 function saveHighScore() {
     // Save related form data as an object
     var highscoreRecord = {
-      nameOrinitial :nameOrinitial.value,
-      score: timeleft.value,
+        nameOrinitial: nameOrinitial.value,
+        score: timeleft.value,
     };
     // Use .setItem() to store object in storage and JSON.stringify to convert it as a string
     localStorage.setItem('highScoreHistory', JSON.stringify(highscoreRecord));
-  }
+}
 
-function showHighScore(){}
+function showHighScore() { }
 
 
 /*  randomnize an array
