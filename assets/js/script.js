@@ -9,70 +9,144 @@ var timerInterval;
 
 var trueAnswersArray = ["script", "The body section", "function myFunction()", "myFunction()", "//This is a comment"];
 
-var timeleft = 5;
+var timeleft = 200;
 
 // Sets interval in variable
-var startimer = function(){
- timerInterval = setInterval(function () {
-    timeleft--;
-    countdownNumber.textContent = "Time Remaining: " + timeleft;
-
-    if (timeleft <=0) {
-        // Stops execution of action at set interval
-        clearInterval(timerInterval);
-        // Calls function that shows the Settlement interface
-        quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
-        index = 6;
-        return iterateOverQuizs();
-    }
-}, 1000);
+function startimer() {
+    timerInterval = setInterval(function () {
+        timeleft--;
+        countdownNumber.textContent = "Time Remaining: " + timeleft;
+        if (timeleft <= 0) {
+            clearInterval(timerInterval);
+            quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
+            index = 6;
+            return iterateOverQuizs();
+        }
+        if (index === 6) { clearInterval(timerInterval); }
+    }, 1000);
 }
 
 var iterateOverQuizs = function () {
     quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
-    if (trueAnswersArray.includes(checkAnswer) && index < 5) {
+    if (trueAnswersArray.includes(checkAnswer) && index < 6) {
         quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
         index++;
         lastQuestionCorrectorNot.textContent = "Last Question= correct!"
-    } else if (!trueAnswersArray.includes(checkAnswer) && index < 5) {
+    } else if (!trueAnswersArray.includes(checkAnswer) && index < 6) {
         quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
         index++;
         timeleft = timeleft - 10;
         lastQuestionCorrectorNot.textContent = "Last Question= wrong"
-    } else  { 
-        quizDivNumber.children[index].setAttribute('class', 'revealed-quiz')
-        clearInterval(timerInterval); }
+    } else if (index === 6) {
+        quizDivNumber.children[index].setAttribute('class', 'revealed-quiz');
+        return clearInterval(timerInterval);
+    }
 }
 
 quizStartbutton.addEventListener("click", function (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
     quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
     index++;
     startimer();
 });
 
-answerListContainer.addEventListener("click", function (event) {
-    event.preventDefault();
-    var element = event.target;
-    checkAnswer = element.getAttribute("textcontent")
-    if (element.matches("li")) { iterateOverQuizs() }
-    
+answerListContainer.forEach((item) => {
+    item.addEventListener("click", function (event) {
+        event.preventDefault();
+        var element = event.target;
+        checkAnswer = element.textContent
+        if (element.matches("li")) { iterateOverQuizs() }
+    })
 })
 
-var settlementScreen = function () { }
+var getulElement = document.getElementById('score-list');
+var getNameInput = document.getElementById('score-form-input');
+var submitButton = document.getElementById('submit-score-button');
+var ScoreRecordArray = [];
+var clearHistoryButton = document.getElementById('clearAllHistory')
 
-function saveHighScore() {
-    // Save related form data as an object
-    var highscoreRecord = {
-        nameOrinitial: nameOrinitial.value,
-        score: timeleft.value,
-    };
-    // Use .setItem() to store object in storage and JSON.stringify to convert it as a string
-    localStorage.setItem('highScoreHistory', JSON.stringify(highscoreRecord));
+function initialRenderScoreHistory() {
+    var ScoreRecordRetrivedfromLS = JSON.parse(localStorage.getItem("ScoreRecordinLS"));
+    if (ScoreRecordRetrivedfromLS !== null) {
+        ScoreRecordArray = ScoreRecordRetrivedfromLS;
+    }
+    // This is a helper function that will render todos to the DOM
+    renderRecord();
 }
 
-function showHighScore() { }
+function renderRecord() {
+    // Clear todoList element 
+    getulElement.innerHTML = "";
+    // Render a new li for each todo
+    for (var i = 0; i < ScoreRecordArray.length; i++) {
+        var ScoreRecord = ScoreRecordArray[i];
+        var li = document.createElement("li");
+        li.textContent = ScoreRecord;
+        li.setAttribute("data-index", i);
+        getulElement.appendChild(li);
+    }
+}
+
+submitButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    var scoreInputText = getNameInput.value.trim();
+    if (scoreInputText === "") { return; }
+    ScoreRecordArray.push("Name=" + scoreInputText + "," + "Score=" + timeleft);
+    getNameInput.value = ""
+    storeScore();
+    renderRecord();
+    quizDivNumber.children[6].setAttribute('class', 'hidden-quiz')
+    quizDivNumber.children[0].setAttribute('class', 'revealed-quiz')
+    lastQuestionCorrectorNot.textContent = ""
+    timeleft = 200;
+    return index = 0;
+
+}
+)
+
+function storeScore() {
+    localStorage.setItem("ScoreRecordinLS", JSON.stringify(ScoreRecordArray));
+}
+
+clearHistoryButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    var element = event.target
+    if (element.matches("#clearAllHistory")) {
+        ScoreRecordArray = [];
+        renderRecord();
+        return storeScore();
+    }
+    //call render function
+})
+
+initialRenderScoreHistory();
+
+var getShowhistory = document.getElementById('ShoworHideHistory')
+
+
+getShowhistory.addEventListener("click", function (event) {
+    event.preventDefault();
+    var element = event.target
+    if (element.matches("#ShoworHideHistory")) {
+        var state = element.getAttribute("data-state");
+        if (state === "toShow") {
+            element.dataset.state = "toHide";
+            element.textContent = "Hide History";
+            getulElement.setAttribute("class", "score-list-show")
+        } else if (state === "toHide") {
+            element.dataset.state = "toShow";
+            element.textContent = "Show History";
+            getulElement.setAttribute("class","score-list-hide")
+        }
+
+    }
+
+
+
+
+})
+
 
 
 /*  randomnize an array
@@ -83,8 +157,9 @@ points.sort(function(){return 0.5 - Math.random()});
 //change the class of an element;
 //element.setAttribute("class", "value");
 
-//to hide an element in css:   selector {display:none;}
+//to hide an element in css:selector {display:none;}
 
-//to interupt a timer,  clearinterval(var);
+//to stop a timer,  clearinterval(var);
 
 //string.includes()
+

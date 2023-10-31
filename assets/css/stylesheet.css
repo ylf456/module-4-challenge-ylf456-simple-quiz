@@ -21,17 +21,46 @@ h1 {
     padding: 2%;
 }
 
-.highscore-record {
+.score-record {
     display: flex;
     border-radius: 2%;
     border-style: solid;
     border-color: black;
-    width: 20%;
+    width: 22%;
     padding-top: 3%;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
+
+#score-title {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.score-list-show {
+    display: column;
+    flex-direction: column;
+    max-width:95%;
+    max-height: 100%;
+}
+.score-list-hide {
+    display: none;
+}
+
+.score-record li {
+    margin: 3% 0 3% 0;
+    border-color: rgb(206, 37, 93);
+    border-style: solid;
+    padding: 2%
+}
+
+.score-record button {
+    margin: 5%;
+    padding: 2%
+}
+
+
 
 #time-remaining {
     display: flex;
@@ -40,9 +69,14 @@ h1 {
     margin-right: 5%
 }
 
+#quiz-description {
+    font-size: 110%;
+    line-height: 1.5;
+}
+
 #quiz-content {
     width: 100%;
-    height: 100%;
+    height: 95%;
     border-radius: 2%;
     border-style: solid;
     border-color: black;
@@ -68,7 +102,6 @@ h1 {
     padding-left: 0.5%;
 }
 
-
 #start-button {
     font-size: 150%;
     padding: 2%;
@@ -80,8 +113,6 @@ h1 {
 
 }
 
-.hidden-quiz {display: none;}
-
 .revealed-quiz {
     display: flex;
     flex-direction: column;
@@ -90,12 +121,12 @@ h1 {
     padding: 3%;
 }
 
-.revealed-quiz p { 
+.revealed-quiz p {
     font-weight: bold;
     font-size: 150%;
     align-self: flex-start;
-    justify-self: flex-start; 
-    margin-bottom:5% ;
+    justify-self: flex-start;
+    margin-bottom: 5%;
 }
 
 .revealed-quiz li {
@@ -104,14 +135,47 @@ h1 {
     border-color: rgb(90, 38, 158);
     margin: 25% 0 25% 5%;
     padding: 2%;
-    width:180%;
+    width: 180%;
     height: fit-content;
     background-color: antiquewhite;
-    font-size:125%;
+    font-size: 125%;
 
 }
 
 .revealed-quiz li:hover {
     border-color: rgb(208, 19, 19);
-    
+
+}
+
+#score-form-container {
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 5%;
+}
+
+#score-form-input {
+    width: 60%;
+    height: 10%;
+}
+
+#submit-score-button {
+    width: fit-content;
+    height: fit-content;
+    font-size: 150%;
+    padding: 1%;
+}
+
+
+.hidden-quiz {
+    display: none;
+}
+
+#check-last-question {
+    align-self: center;
+    font-size: 150%;
+    font-weight: bold;
+    margin-bottom: 2%;
+    width: fit-content;
+    height: 5%;
 }
