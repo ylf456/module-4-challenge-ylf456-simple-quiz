@@ -96,12 +96,12 @@ submitButton.addEventListener("click", function (event) {
     getNameInput.value = ""
     storeScore();
     renderRecord();
-    quizDivNumber.children[6].setAttribute('class', 'hidden-quiz')
-    quizDivNumber.children[0].setAttribute('class', 'revealed-quiz')
-    lastQuestionCorrectorNot.textContent = ""
+    quizDivNumber.children[6].setAttribute('class', 'hidden-quiz');
+    quizDivNumber.children[0].setAttribute('class', 'revealed-quiz');
+    lastQuestionCorrectorNot.textContent = "";
+    countdownNumber.textContent= "Time Remaining:";
     timeleft = 200;
     return index = 0;
-
 }
 )
 
@@ -117,7 +117,6 @@ clearHistoryButton.addEventListener("click", function (event) {
         renderRecord();
         return storeScore();
     }
-    //call render function
 })
 
 initialRenderScoreHistory();
@@ -139,12 +138,7 @@ getShowhistory.addEventListener("click", function (event) {
             element.textContent = "Show History";
             getulElement.setAttribute("class","score-list-hide")
         }
-
     }
-
-
-
-
 })
 
 
