@@ -22,33 +22,39 @@ function startimer() {
             index = 6;
             return iterateOverQuizs();
         }
-        if (index === 6) { clearInterval(timerInterval); }
+      //  if (index === 6) { clearInterval(timerInterval); }
     }, 1000);
 }
 
-var iterateOverQuizs = function () {
-    quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
+var iterateOverQuizs = function () {   
+    index++;
+    quizDivNumber.children[index-1].setAttribute('class', 'hidden-quiz')
+    
+   // console.log(index); shows the index of current page
+
     if (trueAnswersArray.includes(checkAnswer) && index < 6) {
-        quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
-        index++;
+        quizDivNumber.children[index].setAttribute('class', 'revealed-quiz')
+        
         lastQuestionCorrectorNot.textContent = "Last Question= correct!"
     } else if (!trueAnswersArray.includes(checkAnswer) && index < 6) {
-        quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
-        index++;
+        quizDivNumber.children[index].setAttribute('class', 'revealed-quiz')
+        
         timeleft = timeleft - 10;
         lastQuestionCorrectorNot.textContent = "Last Question= wrong"
     } else if (index === 6) {
         quizDivNumber.children[index].setAttribute('class', 'revealed-quiz');
-        return clearInterval(timerInterval);
-    }
+        clearInterval(timerInterval);
+        return;
+    } 
 }
 
 quizStartbutton.addEventListener("click", function (event) {
     event.preventDefault();
-    quizDivNumber.children[index].setAttribute('class', 'hidden-quiz')
-    quizDivNumber.children[index + 1].setAttribute('class', 'revealed-quiz')
+    quizDivNumber.children[0].setAttribute('class', 'hidden-quiz');
+    quizDivNumber.children[1].setAttribute('class', 'revealed-quiz');
     index++;
     startimer();
+   // console.log(index); index should be 1 to show the first quiz question
 });
 
 answerListContainer.forEach((item) => {
